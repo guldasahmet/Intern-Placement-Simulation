@@ -1,0 +1,132 @@
+═══════════════════════════════════════════════════════════════════
+SLAYT 1: GREEDY (AÇGÖZLÜ) ALGORİTMASI
+═══════════════════════════════════════════════════════════════════
+
+Başlık: Algoritma 1: Greedy (Açgözlü) Yaklaşım
+
+Alt Başlık: Anlık Kazanç Odaklı, Geri Dönüşsüz Strateji
+
+───────────────────────────────────────────────────────────────────
+(Slayta Yapıştırılacak Metin)
+───────────────────────────────────────────────────────────────────
+
+Greedy algoritması, karmaşık bir problemi çözmek için en basit ve en hızlı yolu seçer: "Geleceği düşünme, şu an elindeki en iyi seçeneği al."
+
+Çalışma mantığı oldukça nettir: Sistem önce tüm öğrencileri Akademik Not Ortalamalarına (GNO) göre büyükten küçüğe sıralar. Listede en üstte olan en başarılı öğrenciyi alır ve onun tercih listesindeki kontenjanı müsait olan en iyi firmaya anında yerleştirir.
+
+Ancak algoritmanın "Açgözlü" olarak adlandırılmasının bir sebebi vardır: Geriye dönük düzeltme (Backtracking) yapmaz. Yüksek puanlı bir öğrenciyi yerleştirdikten sonra, bu kararın diğer öğrencileri mutsuz edip etmediğine bakmaz. Bu yüzden çok hızlı çalışsa da (0.02 saniye), elde ettiği sonuç genellikle mükemmel (Global Optimum) değildir; sadece o an için "yeterince iyi"dir.
+
+Algoritmanın zaman karmaşıklığı O(n log n + n×k) seviyesindedir. Burada n öğrenci sayısı, k ise tercih sayısıdır. Sıralama işlemi en maliyetli adımdır; ancak bu bile modern bilgisayarlarda çok hızlıdır. 100 öğrencilik bir veri setinde Greedy algoritması ortalama 0.023 saniyede tamamlanır.
+
+En büyük avantajı hızdır; en büyük dezavantajı ise yerel optimum tuzağına düşmesidir. Düşük GNO'lu öğrenciler için tercih şansları azalır çünkü yüksek puanlılar önce seçim yapar ve popüler firmaların kontenjanlarını bitirir.
+
+
+═══════════════════════════════════════════════════════════════════
+SLAYT 2: HILL CLIMBING ALGORİTMASI
+═══════════════════════════════════════════════════════════════════
+
+Başlık: Algoritma 2: Hill Climbing (Tepeye Tırmanma)
+
+Alt Başlık: İteratif Yerel Arama ile Kademeli İyileştirme
+
+───────────────────────────────────────────────────────────────────
+(Slayta Yapıştırılacak Metin)
+───────────────────────────────────────────────────────────────────
+
+Hill Climbing algoritması, Greedy'nin ürettiği başlangıç çözümünü alır ve onu adım adım iyileştirmeye çalışır. Algoritmanın adı, bir dağın zirvesine tırmanma metaforundan gelir: Her adımda "yukarı" gitmeye çalışırsınız; yani mevcut çözümden daha iyi bir komşu çözüm ararısınız.
+
+Çalışma prensibi şöyledir: Rastgele bir öğrenci seçilir ve bu öğrencinin firmadaki yeri başka bir tercihine taşınır (MOVE operasyonu) veya iki öğrencinin yerleri birbiriyle değiştirilir (SWAP operasyonu). Bu yeni durum için toplam memnuniyet skoru yeniden hesaplanır.
+
+Eğer yeni skor, eski skordan daha yüksekse, algoritma bu yeni çözümü kabul eder ve oradan devam eder. Eğer skor daha düşükse, değişiklik reddedilir ve eski çözüme geri dönülür. Bu işlem 3000 iterasyon boyunca tekrarlanır ve süreç sonunda ulaşılan en iyi çözüm kaydedilir.
+
+Hill Climbing'in kritik zayıflığı yerel maksimum problemidir. Algoritma sadece "yukarı" çıkabilir; daha iyi bir zirveye ulaşmak için geçici olarak "aşağı" inmesine izin verilmez. Bu yüzden bazen asıl en yüksek noktayı (Global Maksimum) göremez ve yakındaki küçük bir tepeye (Local Maksimum) takılıp kalır.
+
+Deneysel testlerimizde Hill Climbing, Greedy algoritmasına göre ortalama %4-5 daha yüksek memnuniyet skoru elde etti. Süre açısından ise 100 öğrencilik bir senaryoda yaklaşık 1.87 saniye sürdü. Bu, Greedy'den yavaş ama Simulated Annealing'den hızlıdır; yani bir orta yol çözümüdür.
+
+
+═══════════════════════════════════════════════════════════════════
+SLAYT 3: SIMULATED ANNEALING ALGORİTMASI
+═══════════════════════════════════════════════════════════════════
+
+Başlık: Algoritma 3: Simulated Annealing (Tavlamalı Benzetim)
+
+Alt Başlık: Stokastik Global Arama ve Termodinamik İlham
+
+───────────────────────────────────────────────────────────────────
+(Slayta Yapıştırılacak Metin)
+───────────────────────────────────────────────────────────────────
+
+Simulated Annealing (SA), metalurjideki tavlama sürecinden esinlenmiş sofistike bir optimizasyon algoritmasıdır. Metal tavlama işleminde malzeme önce yüksek sıcaklığa ısıtılır (atomlar serbest hareket eder), ardından yavaşça soğutulur (atomlar en kararlı düzene yerleşir). SA da aynı mantıkla çalışır: Başlangıçta çok "esnek" davranır, sonra giderek "katılaşır."
+
+Algoritmanın Hill Climbing'den temel farkı Metropolis Kriteri'dir. Hill Climbing sadece daha iyi çözümleri kabul ederken, SA daha kötü çözümleri de belirli bir olasılıkla kabul eder. Bu olasılık şu formülle hesaplanır: P = e^(ΔE / T). Burada ΔE skor farkı, T ise sistemin mevcut sıcaklığıdır.
+
+Yüksek sıcaklıkta (örneğin T=150) sistem çok toleranslıdır; kötü çözümleri bile %90'a varan olasılıkla kabul eder. Bu "keşif" (exploration) fazıdır. Sistem farklı bölgeleri araştırır ve yerel tuzaklardan kaçınır. Sıcaklık düştükçe (T→0) tolerans azalır ve algoritma sadece iyileştirme yapan hamlelerimkabul eder. Bu da "sömürü" (exploitation) fazıdır.
+
+Projemizde T₀=150 başlangıç sıcaklığı ve α=0.99 soğutma oranı kullanılmıştır. Her iterasyonda T_yeni = 0.99 × T_eski formülüyle sıcaklık düşer. 10,000 iterasyon sonunda sistem tamamen "donar" ve en iyi bulunan çözüm döndürülür.
+
+Simulated Annealing, testlerimizde diğer iki algoritmayı geçerek en yüksek memnuniyet skorunu elde etti. Greedy'ye göre %5.5, Hill Climbing'e göre %0.8 daha iyi performans gösterdi. Süre olarak 100 öğrencilik senaryoda 3.12 saniye aldı. Bu, hız-kalite dengesinde kalitenin öncelikli olduğu durumlarda tercih edilmesi gereken algoritmadır.
+
+SA'nın en büyük avantajı teorik olarak global optimuma yaklaşabilmesidir. Yerel maksimumlardan kaçma yeteneği vardır. Ancak parametre seçimi (T₀, α) kritiktir; yanlış değerler algoritmanın başarısını düşürür.
+
+
+═══════════════════════════════════════════════════════════════════
+BONUS: 3 ALGORİTMANIN KARŞILAŞTIRMASI (EK SLAYT)
+═══════════════════════════════════════════════════════════════════
+
+Başlık: Algoritma Karşılaştırması: Hız mı, Kalite mi?
+
+Alt Başlık: Üç Yaklaşımın Trade-off Analizi
+
+───────────────────────────────────────────────────────────────────
+(Slayta Yapıştırılacak Metin)
+───────────────────────────────────────────────────────────────────
+
+Üç algoritmanın performansını 100 öğrenci ve 20 firma içeren bir test senaryosunda karşılaştırdık. Sonuçlar şu şekilde özetlenebilir:
+
+Greedy algoritması 0.023 saniyede 7,240 memnuniyet puanı elde etti. %92 oranında öğrenci yerleştirdi. Hız konusunda tartışmasız lider ancak kalite açısından en düşük skoru aldı. Öğrencilerin %45'i ilk tercihine yerleşirken, %8'i hiçbir firmaya yerleşemedi.
+
+Hill Climbing 1.87 saniyede 7,580 puan elde etti. Greedy'den %4.7 daha iyi sonuç verdi. %96 yerleştirme oranına ulaştı. Algoritmanın 3000 iterasyonu boyunca sürekli iyileştirme aradı; ancak yaklaşık 2000. iterasyondan sonra platoya ulaştı ve daha fazla gelişme sağlayamadı.
+
+Simulated Annealing ise 3.12 saniyede 7,640 puan skorladı. En yüksek kaliteyi sundu; ancak en yavaş algoritmadır. %99 yerleştirme oranıyla neredeyse tüm öğrencileri bir firmaya yerleştirmeyi başardı. 10,000 iterasyonun 8000'inde skor stabilize oldu; son 2000 iterasyon önemli katkı sağlamadı.
+
+Hangi algoritma seçilmelidir? Bu, uygulama gereksinimlerine bağlıdır: Gerçek zamanlı sistemler ve çok büyük veri setleri için Greedy, orta ölçekli problemler ve dengeli çözüm isteyen durumlar için Hill Climbing, kritik uygulamalar ve kalite odaklı senaryolar için Simulated Annealing önerilir.
+
+Sonuç olarak: Hız gerekliyse Greedy, kalite gerekliyse Simulated Annealing, ikisi arasında denge isteniyorsa Hill Climbing tercih edilmelidir.
+
+
+═══════════════════════════════════════════════════════════════════
+EKSTRA: ÖRNEK SENARYO ANLATIMI (OPSIYONEL SLAYT)
+═══════════════════════════════════════════════════════════════════
+
+Başlık: Somut Örnek: 5 Öğrenci, 3 Firma
+
+Alt Başlık: Algoritmaların Adım Adım Karşılaştırılması
+
+───────────────────────────────────────────────────────────────────
+(Slayta Yapıştırılacak Metin)
+───────────────────────────────────────────────────────────────────
+
+Algoritmalarımızı daha iyi anlamak için basit bir örnek üzerinden gidelim: 5 öğrenci (Ali, Ayşe, Mehmet, Zeynep, Can) ve 3 firma (Firma_A, Firma_B, Firma_C) var. Kontenjanlar şöyle: Firma_A=2, Firma_B=1, Firma_C=2. Öğrencilerin GNO'ları ve tercihleri tabloda gösterilmiştir.
+
+Greedy algoritması GNO sıralamasına göre hareket eder. Ali (GNO=3.8) ilk seçim yapar ve Firma_A'yı alır. Ayşe (GNO=3.6) de Firma_A'yı ister ve alır. Mehmet (GNO=3.2) Firma_B'yi alır. Zeynep (GNO=2.9) geldiğinde ilk iki tercihi (Firma_A ve Firma_B) doludur; mecburen üçüncü tercihi olan Firma_C'ye yerleşir. Can ise Firma_C'nin kalan yerine yerleşir. Toplam memnuniyet puanı: 460.
+
+Hill Climbing, Greedy'nin sonucunu alır ve iyileştirmeye çalışır. Algoritma Ayşe ile Zeynep'in yerlerini değiştirmeyi dener (SWAP operasyonu). Ayşe Firma_C'ye gider (ikinci tercihi, 80 puan) ve Zeynep Firma_A'ya geçer (birinci tercihi, 100 puan). Yeni skor: 480. Bu hamle kabul edilir çünkü toplam skoru 20 puan artırır.
+
+Simulated Annealing de aynı SWAP'i bulabilir, ancak ek olarak geçici olarak skoru düşüren hamleleri de kabul edebilir. Örneğin yüksek sıcaklıkta (T=150) Can ile Ali'nin yerini değiştirse bile (ki bu skoru düşürür), %70 olasılıkla bu hamleyi kabul eder. Bu sayede daha geniş bir alanda arama yapar ve potansiyel olarak daha iyi çözümler bulabilir.
+
+Bu basit örnekte her üç algoritma da benzer sonuçlar verse de, problem büyüdükçe (n>100) Simulated Annealing'in üstünlüğü belirginleşir. Greedy 460 puanda kalırken, Hill Climbing 480'e çıkar ve SA 480 veya daha yüksek bir değere ulaşabilir.
+
+
+═══════════════════════════════════════════════════════════════════
+KULLANIM TALİMATI
+═══════════════════════════════════════════════════════════════════
+
+Her slayt için:
+1. Başlık ve Alt Başlık kısmını slaytın üstüne koyun
+2. Ana metin paragraflarını slaytın gövdesine yapıştırın
+3. Opsiyonel olarak [cite_start] etiketlerini kaldırabilirsiniz
+4. Font boyutu: Başlık 32pt, Alt başlık 18pt, Gövde metni 14-16pt önerilir
+5. Satır aralığı: 1.5 - 2.0 arası okunabilirlik için idealdir
+
+Bu metinler doğrudan PowerPoint'e yapıştırılmaya hazırdır!
+═══════════════════════════════════════════════════════════════════
